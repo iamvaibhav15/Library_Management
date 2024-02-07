@@ -32,39 +32,11 @@ app.use(cookieParser());
 
 
 //routes import
+import userRouter from "./routes/user.route.js"
 //routes declaration
+app.use('/api/user', userRouter);
 // Register route
-import {User} from "./models/user.model.js"
 
-app.post('/register', async (req, res) => {
-    try {
-      const { username, password, email, role } = req.body;
-  
-      // Check if the username already exists
-      const existingUsername = await User.findOne({ username });
-      if (existingUsername) {
-        return res.status(400).json({ error: 'Username already exists' });
-      }
-  
-      // Check if the email already exists
-      const existingEmail = await User.findOne({ email });
-      if (existingEmail) {
-        return res.status(400).json({ error: 'Email already exists' });
-      }
-  
-      // Create a new user using the User model
-      const newUser = new User({ username, password, email, role });
-  
-      // Save the user to the database
-      const savedUser = await newUser.save();
-  
-      // Respond with the saved user details (you may choose to omit the password field for security reasons)
-      res.status(201).json(savedUser);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
   
 
 
